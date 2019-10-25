@@ -24,14 +24,14 @@ class _RotinaScreenState extends State<RotinaScreen> {
   _RotinaScreenState(this.document);
 
   String _montarConteudo() {
-    String conteudo = "${document["cod"]} - ${document["nome"]}";
+    String conteudo = ""; //  "${document["cod"]} - ${document["nome"]}";
 
     // _itens.add(ListTile(
     //   title: Text("${document["cod"]} - ${document["nome"]}\n\nComentários:"),
     // ));
 
     if (document["comentarios"] != null) {
-      conteudo += "\n.\n.\n**Comentários:**\n\n";
+      // conteudo += "\n.\n.\n**Comentários:**\n\n";
 
       for(int i=0; i < document["comentarios"].length; i++) {
         String c = document["comentarios"][i];
@@ -48,6 +48,10 @@ class _RotinaScreenState extends State<RotinaScreen> {
     super.initState();
   }
 
+  bool _novoComentario = false;
+  var _comentarioController = TextEditingController();
+  var _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,16 +61,101 @@ class _RotinaScreenState extends State<RotinaScreen> {
         // the App.build method, and use it to set our appbar title.
         title: Text("Rotina"),
       ),
-      body: SafeArea(
-          child: Markdown(
-            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(p: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0)),
-            data: _montarConteudo(),
-            onTapLink: (String href) { 
-              var root = MaterialPageRoute(builder:  (context) => new PhotoViewScreen(href));
-              Navigator.push(context, root);
-            },
-          ),
-        ),
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: ListView(
+          controller: _scrollController,
+          shrinkWrap: true,
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    child: Text("${document["cod"]} - ${document["nome"]}", style: TextStyle(fontSize: 16.0)),
+                ),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    child: Text("Comentários:", style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                ),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    child: TextField(
+                        controller: _comentarioController,
+                        keyboardType: TextInputType.multiline,
+                        textCapitalization: TextCapitalization.sentences,
+                        minLines: 1,
+                        maxLines: 6,
+                        onChanged: (valor) { 
+                          setState(() { 
+                            _novoComentario = valor.length > 0; 
+                          });
+                        },
+                    ),
+                ),
+                Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    child: _novoComentario 
+                        ? ButtonTheme(
+                              minWidth: 100.0,
+                              height: 40.0,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              child: RaisedButton(
+                                child: const Text("Salvar", style: TextStyle(color: Colors.white),),
+                                color: Color(0xFF54C5F8),
+                                onPressed: () { 
+                                    setState(() {
+                                        _comentarioController.text = "";
+                                        _novoComentario = false;
+                                        // hide soft keyboard
+                                        FocusScope.of(context).requestFocus(new FocusNode());
+
+                                        _scrollController.animateTo(0, duration: new Duration(seconds: 1), curve: Curves.ease);
+                                    });
+                                }
+                              )
+                          )
+                        : null
+                ),                
+                MarkdownBody(
+                    styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(p: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0)),
+                    data: _montarConteudo(),
+                    onTapLink: (String href) { 
+                      var root = MaterialPageRoute(builder:  (context) => new PhotoViewScreen(href));
+                      Navigator.push(context, root);
+                    },
+                ),
+                
+            ],
+        )
+      )
+          /*
+          Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,                  
+                children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  child: Text("${document["cod"]} - ${document["nome"]}"),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Text("Informações:", style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                TextField(
+
+                ),
+                       
+              ),
+               Markdown(
+                styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(p: Theme.of(context).textTheme.body1.copyWith(fontSize: 16.0)),
+                data: _montarConteudo(),
+                onTapLink: (String href) { 
+                  var root = MaterialPageRoute(builder:  (context) => new PhotoViewScreen(href));
+                  Navigator.push(context, root);
+                },
+              ),  */
+            // ],)
+        // ),
       
       // Column(
       //   crossAxisAlignment: CrossAxisAlignment.start,
