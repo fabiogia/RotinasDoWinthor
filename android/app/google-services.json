@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "114515175634",
+    "firebase_url": "https://rotinas-do-winthor.firebaseio.com",
+    "project_id": "rotinas-do-winthor",
+    "storage_bucket": "rotinas-do-winthor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114515175634:android:c6a7d8258032a0f6aae50b",
+        "android_client_info": {
+          "package_name": "rotinaswinthor.com.hipersolucoes.rotinasdowinthor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114515175634-gvb5q8fvss76pj983no8s76uultsashu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsWOUj7osHGhC1dS5frTWL0AydmOKOdD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114515175634-gvb5q8fvss76pj983no8s76uultsashu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
